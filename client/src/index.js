@@ -6,6 +6,7 @@ import UserStore from "./store/UserStore";
 import PirateStore from "./store/PirateStore";
 import TeamStore from "./store/TeamStore";
 import DevilFruitStore from "./store/DevilFruitStore";
+import RankingStore from "./store/RankingStore";
 export const Context = createContext(null)
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -14,7 +15,8 @@ root.render(
         user: new UserStore(),
         team: new TeamStore(),
         pirate: new PirateStore(),
-        devilFruitArray: new  DevilFruitStore()
+        devilFruitArray: new  DevilFruitStore(),
+        rankingArray: new RankingStore()
     }}>
         <App/>
     </Context.Provider>);
