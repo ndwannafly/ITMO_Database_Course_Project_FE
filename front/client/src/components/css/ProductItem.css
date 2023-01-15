@@ -1,0 +1,5 @@
+#ProductItemText:hover{
+    background: #6dae81;
+    transition: all .2s;
+    border-radius: 15% 15% 15% 15%;
+}
