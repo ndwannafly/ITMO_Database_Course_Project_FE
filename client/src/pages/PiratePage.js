@@ -15,9 +15,11 @@ const PiratePage = observer(() => {
     const firstPostIndex = lastPostIndex - postsPerPage
     const currentPosts = pirate.pirate.slice(firstPostIndex, lastPostIndex)
     useEffect(() => {
+
         $host.get("/pirate").then((response) => {
             pirate.setPirate(response.data)
         })
+
     }, [])
 
     return (<Row className="g-0">

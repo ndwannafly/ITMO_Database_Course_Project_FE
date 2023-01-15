@@ -4,7 +4,7 @@ import {
 
     PIRATE_ROUTE,
 
-    LOGIN_ROUTE
+    LOGIN_ROUTE, ADD_PAGE
 } from "../utils/const";
 import {NavLink, useHistory} from "react-router-dom";
 import NavbarImg from "../assets/NavBarImg.webp"
@@ -32,7 +32,9 @@ const NavBar = observer(() => {
             <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
                 history.push(PIRATE_ROUTE)
             }}>Пираты</Button></NavItem>
-
+            <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
+                history.push(ADD_PAGE)
+            }}>Добавить</Button></NavItem>
 
         </Nav>
         <Nav className="flex-column me-3">
