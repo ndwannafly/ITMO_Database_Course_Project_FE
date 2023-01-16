@@ -1,28 +1,19 @@
 import {$host} from "../axiosAPI";
-export const addPirate = (name, height, birthDate, captureReward, teamName,title, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal) => {
+export const addPirate = (name, height, birthDate, captureReward, teamID,title, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal) => {
     const {date} = $host.post("/pirate/add", {
         name: name,
         height: parseInt(height),
         birthDate: birthDate,
         captureReward: parseInt(captureReward),
-        teamName: teamName,
+        teamID: teamID,
         title: title,
-        devilFruit: devilFruit,
-        devilFruitOwner: parseInt(devilFruitOwner),
-        weapon: weapon,
-        weaponOwner: parseInt(weaponOwner),
-        willArmament: parseInt(willArmament),
-        willObservation: parseInt(willObservation),
-        willRoyal: parseInt(willRoyal)
-
-
-
-
-
-
-
-
-
+        fruitID: devilFruit,
+        fruitOwnerLevel: parseInt(devilFruitOwner),
+        weaponID: weapon,
+        weaponOwnerLevel: parseInt(weaponOwner),
+        willOfArmsLevel: parseInt(willArmament),
+        willOfObservation: parseInt(willObservation),
+        willOfKing: parseInt(willRoyal)
     })
     return date
 }

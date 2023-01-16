@@ -13,7 +13,7 @@ const AddPage = () => {
         <Row>
             <Col>
                 <Button type={"button"}
-                        onClick={() => setPirateVisible(true)}
+                    onClick={() => setPirateVisible(true)}
                 >
                     Добавить Пирата
                 </Button>
@@ -21,15 +21,15 @@ const AddPage = () => {
             </Col>
         </Row>
         <Row>
-            <Col>
-                <Button type={"button"}
-                        onClick={() => setSentinelVisible(true)}
-                >
-                    Добавить Дозоного
-                </Button>
-                <AddSentinel show={sentinelVisible} onHide={() => setSentinelVisible(false)}></AddSentinel>
-            </Col>
-        </Row>
+        <Col>
+            <Button type={"button"}
+                    onClick={() => setSentinelVisible(true)}
+            >
+                Добавить Дозоного
+            </Button>
+            <AddSentinel show={sentinelVisible} onHide={() => setSentinelVisible(false)}></AddSentinel>
+        </Col>
+    </Row>
     </Container>);
 };
 

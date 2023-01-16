@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
 import Modal from "react-bootstrap/Modal";
-import {Button, Dropdown, Form, Row, Col} from "react-bootstrap";
-import {addFish} from "../../http/fishAPI";
+import {Button, Form, Row, Col} from "react-bootstrap";
+import {addPirate} from "../../http/pirateAPI";
 import {Context} from "../../index";
 import {$host} from "../../axiosAPI";
 import PirateItem from "../PirateItem";
-
+import {Dropdown} from "react-bootstrap";
 
 
 const AddPirate = observer(({ show, onHide}) => {
@@ -15,7 +15,7 @@ const AddPirate = observer(({ show, onHide}) => {
     const [birthDate, setBirthDate] = useState('');
     // const [teamName, setTeamName] = useState('');
     const [captureReward, setCaptureReward] = useState('');
-    const [teamName, setTeamName] = useState('');
+    const [teamID, setTeamId] = useState('');
     const [title, setTitle] = useState('');
     const [devilFruit, setDevilFruit] = useState('');
     const [devilFruitOwner, setDevilFruitOwner] = useState('');
@@ -26,8 +26,11 @@ const AddPirate = observer(({ show, onHide}) => {
     const [willRoyal, setWillRoyal] = useState('')
     const {team} = useContext(Context)
     const {devilFruitArray} = useContext(Context)
+
+    const {weaponArray} = useContext(Context)
     const submit = () => {
-        addFish(name, height, birthDate, captureReward, teamName, title, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal)
+
+        addPirate(name, height, birthDate, captureReward, parseInt(teamID), title, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal)
         onHide()
     }
 
@@ -42,6 +45,15 @@ const AddPirate = observer(({ show, onHide}) => {
             devilFruitArray.setDevilFruit(response.data)
         })
     }, [])
+
+
+    useEffect(() => {
+        $host.get("/weapon").then((response) => {
+            weaponArray.setWeapon(response.data)
+        })
+    }, [])
+
+
 
     return (
         <Modal
@@ -86,13 +98,11 @@ const AddPirate = observer(({ show, onHide}) => {
                             Выберите Комманду
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {team.team.map(team => (<Dropdown.Item onClick={() => setTeamName(team.name)}>
+                            {team.team.map(team => (<Dropdown.Item onClick={() => setTeamId(team.id)}>
                                 {team.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
                     </Dropdown>
-
-
                     <Form.Control
                         onChange={e => setTitle(e.target.value)}
                         className="mt-3"
@@ -100,12 +110,18 @@ const AddPirate = observer(({ show, onHide}) => {
                         type="text"
                     />
 
-                    <Dropdown className="mt-2 mb-2">
+                    <Dropdown className="mt-2 mb-2"
+                              placeholder='State'
+                              fluid
+                              multiple
+                              search
+                              selection
+                    >
                         <Dropdown.Toggle>
                             Выберите фрукт
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {devilFruitArray.devilFruit.map(fruit => (<Dropdown.Item onClick={() => setDevilFruit(fruit.name)}>
+                            {devilFruitArray.devilFruit.map(fruit => ((fruit.name!== "none") &&<Dropdown.Item onClick={() => setDevilFruit(fruit.id)}>
                                 {fruit.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
@@ -118,12 +134,23 @@ const AddPirate = observer(({ show, onHide}) => {
                         type="number"
                     />
 
-                    <Form.Control
-                        onChange={e => setWeapon(e.target.value)}
-                        className="mt-3"
-                        placeholder="Введите название оружия"
-                        type="text"
-                    />
+                    <Dropdown className="mt-2 mb-2"
+                              placeholder='State'
+                              fluid
+                              multiple
+                              search
+                              selection
+                    >
+                        <Dropdown.Toggle>
+                            Выберите Оружие
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {weaponArray.weapon.map(weapon => ((weapon.name !== "none") && <Dropdown.Item onClick={() => setWeapon(weapon.id)}>
+                                {weapon.name}
+                            </Dropdown.Item>))}
+                        </Dropdown.Menu>
+
+                    </Dropdown>
 
                     <Form.Control
                         onChange={e => setWeaponOwner(e.target.value)}
@@ -152,23 +179,16 @@ const AddPirate = observer(({ show, onHide}) => {
                         placeholder="Введите уровень волей короля"
                         type="number"
                     />
-
-
-
-
-
-
-
-
-
-
-
                 </Form>
             </Modal.Body>
+            <Modal.Footer>
+                <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
+                <Button variant="outline-success" onClick={() => {
+                    submit()
+                }}>Добавить</Button>
+            </Modal.Footer>
         </Modal>
     );
-
-
 });
 
 export  default AddPirate;

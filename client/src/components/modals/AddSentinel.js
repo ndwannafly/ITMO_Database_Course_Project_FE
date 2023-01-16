@@ -2,10 +2,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
 import Modal from "react-bootstrap/Modal";
 import {Button, Dropdown, Form, Row, Col} from "react-bootstrap";
-import {addFish} from "../../http/fishAPI";
+import {addSentinel} from "../../http/sentinelAPI";
 import {Context} from "../../index";
 import {$host} from "../../axiosAPI";
-import PirateItem from "../PirateItem";
+
 
 
 
@@ -24,15 +24,20 @@ const AddSentinel = observer(({ show, onHide}) => {
     const [willRoyal, setWillRoyal] = useState('')
     const {rankingArray} = useContext(Context)
     const {devilFruitArray} = useContext(Context)
-
+    const {weaponArray} = useContext(Context)
     const submit = () => {
-        addFish(name, height, birthDate,ranking, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal)
+        addSentinel(name, height, birthDate,ranking, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal)
         onHide()
     }
+    useEffect(() => {
+        $host.get("/weapon").then((response) => {
+            weaponArray.setWeapon(response.data)
+        })
+    }, [])
 
     useEffect(() => {
         $host.get("/ranking").then((response) => {
-            ranking.setTeam(response.data)
+            rankingArray.setRanking(response.data)
         })
     }, [])
 
@@ -79,8 +84,8 @@ const AddSentinel = observer(({ show, onHide}) => {
                             Выберите Звание
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {rankingArray.ranking.map(ranking => (<Dropdown.Item onClick={() => setRanking(ranking.name)}>
-                                {ranking.name}
+                            {rankingArray.ranking.map(ranking => (<Dropdown.Item onClick={() => setRanking(ranking.id)}>
+                                {ranking.title}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
 
@@ -91,7 +96,7 @@ const AddSentinel = observer(({ show, onHide}) => {
                             Выберите фрукт
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {devilFruitArray.devilFruit.map(fruit => (<Dropdown.Item onClick={() => setDevilFruit(fruit.name)}>
+                            {devilFruitArray.devilFruit.map(fruit => ((fruit.name!== "none") && <Dropdown.Item onClick={() => setDevilFruit(fruit.name)}>
                                 {fruit.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
@@ -104,12 +109,23 @@ const AddSentinel = observer(({ show, onHide}) => {
                         type="number"
                     />
 
-                    <Form.Control
-                        onChange={e => setWeapon(e.target.value)}
-                        className="mt-3"
-                        placeholder="Введите название оружия"
-                        type="text"
-                    />
+                    <Dropdown className="mt-2 mb-2"
+                              placeholder='State'
+                              fluid
+                              multiple
+                              search
+                              selection
+                    >
+                        <Dropdown.Toggle>
+                            Выберите Оружие
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {weaponArray.weapon.map(weapon => ((weapon.name !== "none") && <Dropdown.Item onClick={() => setWeapon(weapon.id)}>
+                                {weapon.name}
+                            </Dropdown.Item>))}
+                        </Dropdown.Menu>
+
+                    </Dropdown>
 
                     <Form.Control
                         onChange={e => setWeaponOwner(e.target.value)}
@@ -138,17 +154,12 @@ const AddSentinel = observer(({ show, onHide}) => {
                         placeholder="Введите уровень волей короля"
                         type="number"
                     />
-
-
-
-
-
-
-
-
-
-
-
+                    <Modal.Footer>
+                        <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
+                        <Button variant="outline-success" onClick={() => {
+                            submit()
+                        }}>Добавить</Button>
+                    </Modal.Footer>
                 </Form>
             </Modal.Body>
         </Modal>
