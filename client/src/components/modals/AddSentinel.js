@@ -21,12 +21,14 @@ const AddSentinel = observer(({ show, onHide}) => {
     const [weaponOwner, setWeaponOwner] = useState('')
     const [willArmament, setWillArmament] = useState('')
     const [willObservation, setWillObservation] = useState('')
+    const [base, setBase] = useState('')
     const [willRoyal, setWillRoyal] = useState('')
     const {rankingArray} = useContext(Context)
     const {devilFruitArray} = useContext(Context)
     const {weaponArray} = useContext(Context)
+    const {baseArray} = useContext(Context)
     const submit = () => {
-        addSentinel(name, height, birthDate,ranking, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal)
+        addSentinel(name, height, birthDate,ranking, devilFruit, devilFruitOwner, weapon, weaponOwner, willArmament, willObservation, willRoyal, base)
         onHide()
     }
     useEffect(() => {
@@ -44,6 +46,12 @@ const AddSentinel = observer(({ show, onHide}) => {
     useEffect(() => {
         $host.get("/devilFruit").then((response) => {
             devilFruitArray.setDevilFruit(response.data)
+        })
+    }, [])
+
+    useEffect(() => {
+        $host.get("/base").then((response) => {
+            baseArray.setBase(response.data)
         })
     }, [])
 
@@ -84,7 +92,7 @@ const AddSentinel = observer(({ show, onHide}) => {
                             Выберите Звание
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {rankingArray.ranking.map(ranking => (<Dropdown.Item onClick={() => setRanking(ranking.id)}>
+                            {rankingArray.ranking.map(ranking => (<Dropdown.Item onClick={() => setRanking(parseInt(ranking.id))}>
                                 {ranking.title}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
@@ -93,15 +101,29 @@ const AddSentinel = observer(({ show, onHide}) => {
 
                     <Dropdown className="mt-2 mb-2">
                         <Dropdown.Toggle>
-                            Выберите фрукт
+                            Выберите Базу
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {devilFruitArray.devilFruit.map(fruit => ((fruit.name!== "none") && <Dropdown.Item onClick={() => setDevilFruit(fruit.name)}>
+                            {baseArray.base.map(base => ((base.name!== "none") && <Dropdown.Item onClick={() => setBase(parseInt(base.id))}>
+                                {base.name}
+                            </Dropdown.Item>))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    <Dropdown className="mt-2 mb-2">
+                        <Dropdown.Toggle>
+                            Выберите Фрукт
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {devilFruitArray.devilFruit.map(fruit => ((fruit.name!== "none") && <Dropdown.Item onClick={() => setDevilFruit(parseInt(fruit.id))}>
                                 {fruit.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
-
                     </Dropdown>
+
+
+
+
                     <Form.Control
                         onChange={e => setDevilFruitOwner(e.target.value)}
                         className="mt-3"
@@ -120,7 +142,7 @@ const AddSentinel = observer(({ show, onHide}) => {
                             Выберите Оружие
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {weaponArray.weapon.map(weapon => ((weapon.name !== "none") && <Dropdown.Item onClick={() => setWeapon(weapon.id)}>
+                            {weaponArray.weapon.map(weapon => ((weapon.name !== "none") && <Dropdown.Item onClick={() => setWeapon(parseInt(weapon.id))}>
                                 {weapon.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>

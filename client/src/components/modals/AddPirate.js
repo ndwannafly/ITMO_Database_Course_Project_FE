@@ -10,6 +10,9 @@ import {Dropdown} from "react-bootstrap";
 
 
 const AddPirate = observer(({ show, onHide}) => {
+    const [teamName, setTeamName] = useState('')
+    const [weaponName, setWeaponName] = useState('')
+    const [devilFruitName, setDevilFruitName] = useState("")
     const [name, setName] = useState('')
     const [height, setHeight] = useState('');
     const [birthDate, setBirthDate] = useState('');
@@ -95,10 +98,23 @@ const AddPirate = observer(({ show, onHide}) => {
                     />
                     <Dropdown className="mt-2 mb-2">
                         <Dropdown.Toggle>
-                            Выберите Комманду
+                            {teamName || "Выберите Комманду"}
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {team.team.map(team => (<Dropdown.Item onClick={() => setTeamId(team.id)}>
+                        <Dropdown.Menu style={{overflowY: 'scroll', maxHeight: 300}}>
+                            <Dropdown.Item
+                                style = {{color: "red"}}
+                                onClick={() => {
+                                    setTeamId('')
+                                    setTeamName('')
+                                }
+                                }
+                            >
+                                Отчистить
+                            </Dropdown.Item>
+                            {team.team.map(team => (<Dropdown.Item onClick={() => {
+                                setTeamId(team.id)
+                                setTeamName(team.name)
+                            }}>
                                 {team.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
@@ -110,18 +126,30 @@ const AddPirate = observer(({ show, onHide}) => {
                         type="text"
                     />
 
-                    <Dropdown className="mt-2 mb-2"
-                              placeholder='State'
-                              fluid
-                              multiple
-                              search
-                              selection
-                    >
+                    <Dropdown className="mt-2 mb-2">
                         <Dropdown.Toggle>
-                            Выберите фрукт
+                            {devilFruitName || "Выберите фрукт"}
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {devilFruitArray.devilFruit.map(fruit => ((fruit.name!== "none") &&<Dropdown.Item onClick={() => setDevilFruit(fruit.id)}>
+                        <Dropdown.Menu
+                            style={{overflowY: 'scroll',
+                                maxHeight: 300}}
+                        >
+                            <Dropdown.Item
+                                style = {{color: "red"}}
+                                onClick={() => {
+                                        setDevilFruit('')
+                                        setDevilFruitName('')
+                                    }
+                                }
+                            >
+                                Отчистить
+                            </Dropdown.Item>
+                            {devilFruitArray.devilFruit.map(fruit => ((fruit.name!== "none") &&<Dropdown.Item key={fruit.id} onClick={() =>
+                            {
+                                setDevilFruit(fruit.id)
+                                setDevilFruitName(fruit.name)
+                            }
+                            }>
                                 {fruit.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>
@@ -142,10 +170,26 @@ const AddPirate = observer(({ show, onHide}) => {
                               selection
                     >
                         <Dropdown.Toggle>
-                            Выберите Оружие
+                            {weaponName || "Выберите Оружие"}
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {weaponArray.weapon.map(weapon => ((weapon.name !== "none") && <Dropdown.Item onClick={() => setWeapon(weapon.id)}>
+                        <Dropdown.Menu
+                            style={{overflowY: 'scroll',
+                                maxHeight: 300}}
+                        >
+                            <Dropdown.Item
+                                style = {{color: "red"}}
+                                onClick={() => {
+                                    setWeapon('')
+                                    setWeaponName('')
+                                }
+                                }
+                            >
+                                Отчистить
+                            </Dropdown.Item>
+                            {weaponArray.weapon.map(weapon => ((weapon.name !== "none") && <Dropdown.Item onClick={() => {
+                                setWeapon(weapon.id)
+                                setWeaponName(weapon.name)
+                            }}>
                                 {weapon.name}
                             </Dropdown.Item>))}
                         </Dropdown.Menu>

@@ -8,6 +8,8 @@ import TeamStore from "./store/TeamStore";
 import DevilFruitStore from "./store/DevilFruitStore";
 import WeaponStore from "./store/WeaponStore";
 import RankingStore from "./store/RankingStore";
+import BaseStore from "./store/BaseStory";
+import FruitTypeStore from "./store/FruitTypeStore";
 export const Context = createContext(null)
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -18,7 +20,9 @@ root.render(
         pirate: new PirateStore(),
         devilFruitArray: new  DevilFruitStore(),
         rankingArray: new RankingStore(),
-        weaponArray: new WeaponStore()
+        weaponArray: new WeaponStore(),
+        baseArray: new BaseStore(),
+        fruitTypeArray: new FruitTypeStore()
     }}>
         <App/>
     </Context.Provider>);
