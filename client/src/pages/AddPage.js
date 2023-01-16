@@ -5,6 +5,7 @@ import AddTeam from "../components/modals/AddTeam";
 import {Context} from "../index";
 import AddSentinel from "../components/modals/AddSentinel";
 import AddFruit from "../components/modals/AddFruit";
+import AddWeapon from "../components/modals/AddWeapon";
 
 
 const AddPage = () => {
@@ -13,6 +14,7 @@ const AddPage = () => {
     const [sentinelVisible, setSentinelVisible] = useState(false)
     const [teamVisible, setTeamVisible] = useState(false)
     const [fruitVisible, setFruitVisible] = useState(false)
+    const [weaponVisible, setWeaponVisible] = useState(false)
     return(<Container>
         <Row>
             <Col>
@@ -52,6 +54,16 @@ const AddPage = () => {
                     Добавить Фрукт
                 </Button>
                 <AddFruit show={fruitVisible} onHide={() => setFruitVisible(false)}></AddFruit>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                <Button type={"button"}
+                        onClick={() => setWeaponVisible(true)}
+                >
+                    Добавить Оружие
+                </Button>
+                <AddWeapon show={weaponVisible} onHide={() => setWeaponVisible(false)}></AddWeapon>
             </Col>
         </Row>
     </Container>);

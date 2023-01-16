@@ -70,7 +70,7 @@ const AddSentinel = observer(({ show, onHide}) => {
                     <Form.Control
                         onChange={e => setName(e.target.value)}
                         className="mt-3"
-                        placeholder="Введите имя пирата"
+                        placeholder="Введите имя дозорного"
                         type="text"
                     />
                     <Form.Control
