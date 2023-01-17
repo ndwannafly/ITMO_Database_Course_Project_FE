@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Col, Container, Row} from "react-bootstrap";
 import AddPirate from "../components/modals/AddPirate";
 import AddTeam from "../components/modals/AddTeam";
@@ -6,6 +6,8 @@ import {Context} from "../index";
 import AddSentinel from "../components/modals/AddSentinel";
 import AddFruit from "../components/modals/AddFruit";
 import AddWeapon from "../components/modals/AddWeapon";
+import {$host} from "../axiosAPI";
+import {addSentinel} from "../http/sentinelAPI";
 
 
 const AddPage = () => {
@@ -15,11 +17,36 @@ const AddPage = () => {
     const [teamVisible, setTeamVisible] = useState(false)
     const [fruitVisible, setFruitVisible] = useState(false)
     const [weaponVisible, setWeaponVisible] = useState(false)
+    const {devilFruitArray} = useContext(Context)
+
+    const {weaponArray} = useContext(Context)
+    const {team} = useContext(Context)
+    const click = () => {
+        $host.get("/team").then((response) => {
+            team.setTeam(response.data)
+        })
+
+
+        $host.get("/devilFruit").then((response) => {
+            devilFruitArray.setDevilFruit(response.data)
+        })
+
+
+        $host.get("/weapon").then((response) => {
+            weaponArray.setWeapon(response.data)
+        })
+
+    }
     return(<Container>
         <Row>
             <Col>
                 <Button type={"button"}
-                    onClick={() => setPirateVisible(true)}
+                    onClick={() => {
+
+                        click()
+
+                        setPirateVisible(true)
+                    }}
                 >
                     Добавить Пирата
                 </Button>
@@ -29,7 +56,11 @@ const AddPage = () => {
         <Row>
         <Col>
                 <Button type={"button"}
-                        onClick={() => setSentinelVisible(true)}
+                        onClick={() => {
+
+                            click()
+                            setSentinelVisible(true)
+                        }}
                 >
                     Добавить Дозоного
                 </Button>

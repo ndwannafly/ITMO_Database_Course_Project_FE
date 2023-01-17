@@ -3,8 +3,9 @@ import {Button, Image, Nav, Navbar, NavItem} from "react-bootstrap";
 import {
 
     PIRATE_ROUTE,
-
-    LOGIN_ROUTE, ADD_PAGE
+    SENTINEL_PAGE,
+    LOGIN_ROUTE,
+    ADD_PAGE
 } from "../utils/const";
 import {NavLink, useHistory} from "react-router-dom";
 import NavbarImg from "../assets/NavBarImg.webp"
@@ -35,6 +36,9 @@ const NavBar = observer(() => {
             <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
                 history.push(ADD_PAGE)
             }}>Добавить</Button></NavItem>
+            <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
+                history.push(SENTINEL_PAGE)
+            }}>Дозорные</Button></NavItem>
 
         </Nav>
         <Nav className="flex-column me-3">

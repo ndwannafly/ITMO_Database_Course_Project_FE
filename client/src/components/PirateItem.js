@@ -2,24 +2,27 @@ import React, {useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
 import fishImg from "../assets/fish.webp"
 import pirateImg from "../assets/1pirateTeam.png"
-import {Card, Col, Image, Row} from "react-bootstrap";
+import {Button, Card, Col, Dropdown, Form, Image, Row, Modal, Container} from "react-bootstrap";
 import {$host} from "../axiosAPI";
 import {PRODUCT_ROUTE} from "../utils/const";
 import {useHistory} from "react-router-dom";
 import {Text} from "@nextui-org/react";
+import AddWeapon from "./modals/AddWeapon";
+import Update from "./modals/Update";
 
 const PirateItem = observer(({pirate}) => {
-    const [prod, setProd] = useState({})
+
     const history = useHistory()
+    const [updateVisible, setUpdateVisible] = useState(false)
     // useEffect(() => {
     //     $host.get('/pirate/' + pirate.id).then((response) => {
     //         setProd(response.data)
     //     })
     // }, [])
-    const list = Object.entries(prod)
-    return (<Col md={4} style={{width: 500, margin: 4}}>
+
+    return (<Col md={4} style={{width: 500, margin: 2}}>
         <Row className="g-0">
-            <div id="productCard">
+            <div >
                 <Card style={{width: 500, borderRadius: "15px", padding: 7}}>
                     <Row md={12}>
                         <Col md={4}><h3 style={{width: 160}}>{pirate.name} </h3>
@@ -34,7 +37,7 @@ const PirateItem = observer(({pirate}) => {
                         <Col md={8} >
                             <h5 style={{marginLeft: 25}}>Цена: {pirate.captureReward}</h5>
                             <h5 style={{marginLeft: 25}}>Рост: {pirate.height}</h5>
-                            <h5 style={{marginLeft: 25}}>Дата рождения: {pirate.date}</h5>
+                            <h5 style={{marginLeft: 25}}>Возраст: {pirate.date}</h5>
                             {pirate.devilFruitsName !== "none" && <div style={{marginLeft: 25,  color: "red" }} >
                                 <h5 > Дьявольский фрукт :</h5>
                                 <h5 style={{marginLeft: 25}}> {pirate.devilFruitsName}</h5>
@@ -53,11 +56,25 @@ const PirateItem = observer(({pirate}) => {
                                 {pirate.willRoyal > 0 && <h5 style={{marginLeft: 25}}> Королевская воля: {pirate.weaponOwner}</h5>}
 
                             </div>}
+                            <div>
+                                <Row>
+                                    <Col>
+                                        <Button sstyle={{display: 'flex', justifyContent: 'center', color: "gray"}} type={"button"}
+                                                onClick={() => setUpdateVisible(true)}
+                                        >
+                                           Обновить значения
+                                        </Button>
+                                        <Update weaponName={pirate.weaponName} devilFruitId={pirate.devilFruitsName} devilFruitName={pirate.devilFruitsName} peopleId={pirate.personId} personName={pirate.name} show={updateVisible} onHide={() => setUpdateVisible(false)}></Update>
+                                    </Col>
+                                </Row>
+                            </div>
 
                         {/*{list.map((key) => (<Text h6 size="$md" style={{cursor: "pointer", color: "blue"}}*/}
                         {/*                          onClick={() => history.push(PRODUCT_ROUTE + '/' + key[0])}>{key[1]}</Text>))}*/}
                         </Col>
                     </Row>
+
+
                 </Card>
             </div>
         </Row>
