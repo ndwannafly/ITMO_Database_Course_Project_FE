@@ -9,6 +9,7 @@ import PirateList from "../components/PirateList";
 
 const PiratePage = observer(() => {
     const {pirate} = useContext(Context)
+    const {user} = useContext(Context)
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage, setPostsPerPage] = useState(6)
     const lastPostIndex = currentPage * postsPerPage
@@ -19,6 +20,10 @@ const PiratePage = observer(() => {
         $host.get("/pirate").then((response) => {
             pirate.setPirate(response.data)
         })
+
+            user.setUser(localStorage.getItem('user'))
+
+
 
     }, [])
 

@@ -33,17 +33,3 @@ export const publicRoutes = [{
     }
 ]
 
-export const adminRoutes = [{
-    path: LOGIN_ROUTE, Component: AuthPage
-}, {
-    path: REG_ROUTE, Component: RegPage
-},   {
-        path: PIRATE_ROUTE, Component: PiratePage
-    },
-    {
-        path: ADD_PAGE, Component: AddPage
-    },
-    {
-        path: SENTINEL_PAGE, Component: SentinelPage
-    }
-]

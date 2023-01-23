@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {Button, Image, Nav, Navbar, NavItem} from "react-bootstrap";
+import React, {useContext, useEffect} from 'react';
+import {Button,  Nav, Navbar, NavItem} from "react-bootstrap";
 import {
 
     PIRATE_ROUTE,
@@ -7,35 +7,44 @@ import {
     LOGIN_ROUTE,
     ADD_PAGE
 } from "../utils/const";
-import {NavLink, useHistory} from "react-router-dom";
-import NavbarImg from "../assets/NavBarImg.webp"
+import {useHistory} from "react-router-dom";
+
 import {Context} from "../index";
-// import {BsFillCartFill} from "react-icons/bs"
+
 import {observer} from "mobx-react-lite";
-import {Badge} from "@nextui-org/react";
-import {setFavorite} from "../http/userAPI";
+import {$host} from "../axiosAPI";
+
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
     const history = useHistory()
 
+    useEffect(() => {
+        if (localStorage.getItem('user') === 'true'){
+            user.setIsAuth(true)
+        }
+
+
+    }, [])
 
     const logout = () => {
-
+        localStorage.removeItem('user')
+        localStorage.setItem('user', 'false')
         user.setUser({})
         user.setIsAuth(false)
+
     }
     return (<Navbar bg="light" variant="light">
-        <NavLink style={{color: 'white', marginLeft: 7}} to={PIRATE_ROUTE}><Image src={NavbarImg}/></NavLink>
+        
         <Nav className="justify-content-center me-auto" style={{marginLeft: 15}}>
 
 
             <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
                 history.push(PIRATE_ROUTE)
             }}>Пираты</Button></NavItem>
-            <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
+            {user.isAuth && <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
                 history.push(ADD_PAGE)
-            }}>Добавить</Button></NavItem>
+            }}>Добавить</Button></NavItem>}
             <NavItem><Button variant="secondary" style={{marginRight: 10}} onClick={() => {
                 history.push(SENTINEL_PAGE)
             }}>Дозорные</Button></NavItem>

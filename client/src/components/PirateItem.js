@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
-import fishImg from "../assets/fish.webp"
-import pirateImg from "../assets/1pirateTeam.png"
+
 import {Button, Card, Col, Dropdown, Form, Image, Row, Modal, Container} from "react-bootstrap";
 import {$host} from "../axiosAPI";
 import {PRODUCT_ROUTE} from "../utils/const";
@@ -9,11 +8,13 @@ import {useHistory} from "react-router-dom";
 import {Text} from "@nextui-org/react";
 import AddWeapon from "./modals/AddWeapon";
 import Update from "./modals/Update";
+import {Context} from "../index";
 
 const PirateItem = observer(({pirate}) => {
 
     const history = useHistory()
     const [updateVisible, setUpdateVisible] = useState(false)
+    const {user} = useContext(Context)
     // useEffect(() => {
     //     $host.get('/pirate/' + pirate.id).then((response) => {
     //         setProd(response.data)
@@ -52,20 +53,22 @@ const PirateItem = observer(({pirate}) => {
                             {(pirate.willArmament > 0 || pirate.willObservation > 0 || pirate.willRoyal > 0) && <div style={{marginLeft: 25,  color: "green" }} >
                                 <h5 > Воля: </h5>
                                 {pirate.willArmament > 0 && <h5 style={{marginLeft: 25}}>Воля вооружения: {pirate.willArmament}</h5>}
-                                {pirate.willObservation > 0 && <h5 style={{marginLeft: 25}}> Воля наблюдения: {pirate.weaponOwner}</h5>}
-                                {pirate.willRoyal > 0 && <h5 style={{marginLeft: 25}}> Королевская воля: {pirate.weaponOwner}</h5>}
+                                {pirate.willObservation > 0 && <h5 style={{marginLeft: 25}}> Воля наблюдения: {pirate.willObservation}</h5>}
+                                {pirate.willRoyal > 0 && <h5 style={{marginLeft: 25}}> Королевская воля: {pirate.willRoyal}</h5>}
 
                             </div>}
                             <div>
                                 <Row>
-                                    <Col>
-                                        <Button sstyle={{display: 'flex', justifyContent: 'center', color: "gray"}} type={"button"}
+                                    {user.isAuth && <Col>
+                                        <Button sstyle={{display: 'flex', justifyContent: 'center', color: "gray"}}
+                                                type={"button"}
                                                 onClick={() => setUpdateVisible(true)}
                                         >
-                                           Обновить значения
+                                            Обновить значения
                                         </Button>
-                                        <Update weaponName={pirate.weaponName} devilFruitId={pirate.devilFruitsName} devilFruitName={pirate.devilFruitsName} peopleId={pirate.personId} personName={pirate.name} show={updateVisible} onHide={() => setUpdateVisible(false)}></Update>
-                                    </Col>
+                                        <Update  peopleId={pirate.id} personName={pirate.name} devilFruitName={pirate.devilFruitsName} devilFruitId={pirate.devilFruitId} weaponName={pirate.weaponName} weaponId={pirate.weaponId}  onHide={() => setUpdateVisible(false)}  show={updateVisible}>
+                                    </Update>
+                                    </Col>}
                                 </Row>
                             </div>
 

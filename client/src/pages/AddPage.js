@@ -18,7 +18,11 @@ const AddPage = () => {
     const [fruitVisible, setFruitVisible] = useState(false)
     const [weaponVisible, setWeaponVisible] = useState(false)
     const {devilFruitArray} = useContext(Context)
+    const {user} = useContext(Context)
+    useEffect(() => {
+        user.setUser(localStorage.getItem('user'))
 
+    })
     const {weaponArray} = useContext(Context)
     const {team} = useContext(Context)
     const click = () => {
@@ -38,9 +42,9 @@ const AddPage = () => {
 
     }
     return(<Container>
-        <Row>
-            <Col>
-                <Button type={"button"}
+
+        <Row style = {{margin: 10}}>
+            <Button type={"button"}
                     onClick={() => {
 
                         click()
@@ -51,10 +55,10 @@ const AddPage = () => {
                     Добавить Пирата
                 </Button>
                 <AddPirate show={pirateVisible} onHide={() => setPirateVisible(false)}></AddPirate>
-            </Col>
+
         </Row>
-        <Row>
-        <Col>
+        <Row style = {{margin: 10}}>
+
                 <Button type={"button"}
                         onClick={() => {
 
@@ -65,37 +69,39 @@ const AddPage = () => {
                     Добавить Дозоного
                 </Button>
                 <AddSentinel show={sentinelVisible} onHide={() => setSentinelVisible(false)}></AddSentinel>
-            </Col>
+
         </Row>
-        <Row>
-            <Col>
+
+
+        <Row style = {{margin: 10}}>
+
                 <Button type={"button"}
                         onClick={() => setTeamVisible(true)}
                 >
                     Добавить Команду
                 </Button>
                 <AddTeam show={teamVisible} onHide={() => setTeamVisible(false)}></AddTeam>
-            </Col>
+
         </Row>
-        <Row>
-            <Col>
+        <Row style = {{margin: 10}}>
+
                 <Button type={"button"}
                         onClick={() => setFruitVisible(true)}
                 >
                     Добавить Фрукт
                 </Button>
                 <AddFruit show={fruitVisible} onHide={() => setFruitVisible(false)}></AddFruit>
-            </Col>
+
         </Row>
-        <Row>
-            <Col>
+        <Row style = {{margin: 10}}>
+
                 <Button type={"button"}
                         onClick={() => setWeaponVisible(true)}
                 >
                     Добавить Оружие
                 </Button>
                 <AddWeapon show={weaponVisible} onHide={() => setWeaponVisible(false)}></AddWeapon>
-            </Col>
+
         </Row>
     </Container>);
 };

@@ -17,11 +17,23 @@ const SentinelPage = observer (() =>{
     const currentPosts = pirate.pirate.slice(firstPostIndex, lastPostIndex)
     const [sen, setSentinel] = useState('')
     const [checkSen, setCheckSet] = useState(false)
+    const {user} = useContext(Context)
     useEffect(() => {
+
 
         $host.get("/sentinel").then((response) => {
             sentinel.setSentinel(response.data)
+
+            sentinel.sentinel.map(sent =>{
+                if (parseInt(sent.id) == parseInt(localStorage.getItem('sentinelId'))){
+                setSentinel(sent)}
+            })
         })
+        $host.get("/pirateSentinel/" + parseInt(localStorage.getItem('sentinelId'))).then((response) => {
+            pirate.setPirate(response.data)
+        })
+
+        user.setUser(localStorage.getItem('user'))
 
     }, [])
 
@@ -46,6 +58,8 @@ const SentinelPage = observer (() =>{
                                     pirate.setPirate(response.data)
                                 })
                                 setCheckSet(true)
+                                localStorage.setItem('check', 'true')
+                                localStorage.setItem('sentinelId',sentinel.id )
                             }
                             }
                             style={{
@@ -57,19 +71,22 @@ const SentinelPage = observer (() =>{
                     </ListGroup>
                 </Card>
             </Col>
-            <Col  md={7} className="align-self-center" style={{margin: 16.4}}>
+
+            { localStorage.getItem('check')&&<Col style={{positionAlign: ""}} md={"auto"}>
+
+
+                {localStorage.getItem('check')&& < SentinelItem sentinelItam={sen}></SentinelItem>}
+
+            </Col>}
+
+            {localStorage.getItem('check') &&
+            <Col md={7} className="align-self-center" style={{margin: 16.4}}>
+                <h2 style={{textAlign: "center",  backgroundColor: 'white', borderRadius: "15px"}}>Пираты, которых этот дозорный сможет победить</h2>
                 <Pagination totalPosts={pirate.pirate.length} postsPerPages={postsPerPage}
                             setCurrentPage={setCurrentPage} currentPage={currentPage}/>
                 <PirateList pirate={currentPosts}></PirateList>
-            </Col >
-            <Col style={{ positionAlign:""}} md={"auto"} >
-                <h3 >
-                    Дозорный:
-                </h3>
+            </Col>}
 
-                {checkSen && < SentinelItem sentinel={sen}></SentinelItem>}
-
-            </Col>
         </Row>
     )
 

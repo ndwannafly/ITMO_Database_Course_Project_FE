@@ -16,16 +16,15 @@ const RegPage = observer(() => {
     const [password, setPassword] = useState('')
 
     const click = async () => {
-        let checkBox = document.getElementById('reg_check')
+
         if (!validator.isEmail(document.getElementById("reg_email").value)) {
-            document.getElementById("reg_err_msg").textContent = 'Uncorrect email!'
-        } else if (document.getElementById("reg_pass").value === '') {
-            document.getElementById("reg_err_msg").textContent = "Name can't be empty"
+            document.getElementById("reg_err_msg").textContent = 'Некорректный email'
+
         } else if (document.getElementById("reg_pass").value !== document.getElementById("reg_pass1").value) {
-            document.getElementById("reg_err_msg").textContent = "Repeated password incorrectly"
+            document.getElementById("reg_err_msg").textContent = "Не совпадают пароли"
         } else if (!validator.isStrongPassword(document.getElementById("reg_pass").value, {minSymbols: 0})) {
-            document.getElementById("reg_err_msg").textContent = "Password must consist of one lowercase, uppercase letter and number, at least 8 characters"
-        } else if (!checkBox.checked) {
+            document.getElementById("reg_err_msg").textContent = "Пароль должен сожержать минимум: одну прописную букву, одну заглавную букву, одну цифру. Длина должна быть неменьше 8 символов "
+        } else if (false) {
             document.getElementById("reg_err_msg").textContent = 'You need to accept personal data processing policies!'
         } else {
             try {
@@ -34,7 +33,7 @@ const RegPage = observer(() => {
                 const user1 = {email: email, password: password}
                 user.setUser(user1)
                 user.setIsAuth(true)
-
+                localStorage.setItem('user', 'true')
                 history.push(PIRATE_ROUTE)
             } catch (e) {
                 alert(e.response.data.message)
@@ -56,16 +55,18 @@ const RegPage = observer(() => {
                 <Form.Control className="mb-3" id="reg_pass1" placeholder="Повторите ваш пароль..."
                               type="password"></Form.Control>
                 <div style={{color: "red", fontSize: 20}} id="reg_err_msg"></div>
-                <Row><Col md={1}><input id="reg_check" type="checkbox"/></Col><Col><h6>Я согласен с <a
-                    href="https://www.securitycode.ru/personal-data/"
-                    style={{color: "lightblue"}}>политикой обработки персональных
-                    данных</a></h6></Col></Row>
-                <Button style={{background: "rgba(0, 0, 0, 0)", borderColor: "rgba(0, 0, 0, 0)"}}
+
+                <Button style={{borderColor: "black", backgroundColor: "white"}}
                         onClick={() => {
                             click()
-                        }}><img src={regImg} alt={""}/></Button>
-                <a href={LOGIN_ROUTE} className="align-self-center mt-3 mb-3"
-                   style={{fontSize: 18, color: "black", textDecoration: "none"}}>У меня есть аккаунт</a>
+                        }}><p className="align-self-center mt-3 mb-3"
+                              style={{fontSize: 18, color: "black", textDecoration: "none"}} > Завершить регистрацию</p></Button>
+
+                <Button style={{borderColor: "black", backgroundColor: "white", marginTop: 10}}
+                        onClick={() => {
+                            history.push(LOGIN_ROUTE)
+                        }}><p className="align-self-center mt-3 mb-3"
+                              style={{fontSize: 18, color: "black", textDecoration: "none"}} > У меня есть аккаунт</p></Button>
             </Form>
         </Card>
     </Container>);

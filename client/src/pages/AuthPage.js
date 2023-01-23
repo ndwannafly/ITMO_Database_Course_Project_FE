@@ -1,6 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Container, Form} from "react-bootstrap";
-import {PIRATE_ROUTE, REG_ROUTE, SHOP_ROUTE} from "../utils/const";
+import {LOGIN_ROUTE, PIRATE_ROUTE, REG_ROUTE, SHOP_ROUTE} from "../utils/const";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {useHistory} from "react-router-dom";
@@ -20,7 +20,7 @@ const AuthPage = observer(() => {
             const user1 = {email: email, password: password}
             user.setUser(user1)
             user.setIsAuth(true)
-
+            localStorage.setItem('user', 'true')
             history.push(PIRATE_ROUTE)
         } catch (e) {
             alert(e.response.data.message)
@@ -40,20 +40,22 @@ const AuthPage = observer(() => {
                 <h5 className="mt-4">Пароль</h5>
                 <Form.Control id="log_pass" className="mb-4" placeholder="Введите ваш пароль...."
                               type="password" onChange={e => setPassword(e.target.value)}></Form.Control>
-                <a onClick={() => {
-                    history.push(PIRATE_ROUTE)
-                }} className="align-self-lg-end"
-                   style={{fontSize: 17, color: "black", textDecoration: "none", cursor: "pointer"}}>Забыли
-                    пароль?</a>
-                <Button className="w-20 align-self-center" variant="secondary" color="gray"
+
+                <Button style={{borderColor: "black", backgroundColor: "white"}}
                         onClick={() => {
                             click()
-                        }}>Вход</Button>
-                <a onClick={() => {
-                    history.push(REG_ROUTE)
-                }} className="align-self-center mt-3 mb-3"
-                   style={{fontSize: 17, color: "black", textDecoration: "none", cursor: "pointer"}}>У меня нету
-                    аккаунта</a>
+                        }}><p className="align-self-center mt-3 mb-3"
+                              style={{fontSize: 18, color: "black", textDecoration: "none"}} >Вход</p></Button>
+
+                <Button style={{borderColor: "black", backgroundColor: "white", marginTop: 10}}
+                        onClick={() => {
+                            history.push(REG_ROUTE)
+                        }}><p className="align-self-center mt-3 mb-3"
+                              style={{fontSize: 18, color: "black", textDecoration: "none"}} > У меня нету
+                    аккаунта</p></Button>
+
+
+
             </Form>
         </Card>
     </Container>);
